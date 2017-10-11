@@ -1,0 +1,29 @@
+{
+	"name": "faucet-pipeline-static",
+	"version": "0.1.0",
+	"description": "Static Asset Pipeline",
+	"main": "lib/index.js",
+	"scripts": {
+		"test": "eslint --cache lib && ./test/run && echo ✓"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/faucet-pipeline/faucet-pipeline-static.git"
+	},
+	"author": "Lucas Dohmen <lucas@dohmen.io> (https://lucas.dohmen.io/)",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/faucet-pipeline/faucet-pipeline-static/issues"
+	},
+	"homepage": "https://github.com/faucet-pipeline/faucet-pipeline-static#readme",
+	"dependencies": {
+		"faucet-pipeline": "^0.12.0",
+		"faucet-pipeline-util": "^0.10.3"
+	},
+	"devDependencies": {
+		"eslint": "^4.4.1",
+		"eslint-config-fnd": "^1.2.0",
+		"node-hook": "^1.0.0",
+		"release-util-fnd": "^1.0.5"
+	}
+}

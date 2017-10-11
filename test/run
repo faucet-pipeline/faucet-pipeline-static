@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+set -e
+
+root=`dirname "$0"`
+root=`realpath "$root/.."`
+. "$root/test/local.sh"
+
+function begin {
+	test_dir="${1:?}"
+	echo; echo `basename "$test_dir"`
+	pushd "$test_dir" > /dev/null
+}
+
+function end {
+	bundles_dir=${1:-"./dist"}
+	rm -r "$bundles_dir"
+	popd > /dev/null
+}
+
+function assert_identical {
+	actual="${1:?}"
+	expected="${2:?}"
+	# NB: `git diff` provides colorization (dependent on configuration)
+	git diff --no-index "$expected" "$actual" || \
+			fail "files \`$actual\` and \`$expected\` are not identical"
+}
+
+function assert_manifest {
+	asset_path="${1:?}"
+	uri="${2:?}"
+	manifest_path=${3:-"./dist/manifest.json"}
+
+	json="\"$asset_path\":\"$uri\""
+	grep -q "$json" "$manifest_path" || \
+			fail "manifest \`$manifest_path\` does not contain \`$json\`"
+}
+
+function assert_missing {
+	filepath="${1:?}"
+	if [ -f "$filepath" ]; then
+		fail "file \`$filepath\` should not exist"
+	else
+		true
+	fi
+}
+
+function fail {
+	msg="${1:?}"
+	echo; echo "FAILURE: $msg"
+	false
+}
+
+cd "$root/test"
+
+begin "./test_basic"
+	faucet --no-fingerprint
+	assert_identical "./dist/test.txt" "./src/test.txt"
+end
