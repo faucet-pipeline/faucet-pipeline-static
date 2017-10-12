@@ -58,8 +58,8 @@ begin "./test_basic"
 	assert_identical "./dist/test.txt" "./src/test.txt"
 end
 
-# Once again with fingerprinting
-begin "./test_basic"
+begin "./test_fingerprint"
 	faucet
 	assert_identical "./dist/test-e59ff97941044f85df5297e1c302d260.txt" "./src/test.txt"
+	assert_identical "./dist/manifest.json" "./expected.json"
 end
