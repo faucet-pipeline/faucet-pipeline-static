@@ -57,3 +57,9 @@ begin "./test_basic"
 	faucet --no-fingerprint
 	assert_identical "./dist/test.txt" "./src/test.txt"
 end
+
+# Once again with fingerprinting
+begin "./test_basic"
+	faucet
+	assert_identical "./dist/test-e59ff97941044f85df5297e1c302d260.txt" "./src/test.txt"
+end
