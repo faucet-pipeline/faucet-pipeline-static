@@ -56,6 +56,7 @@ cd "$root/test"
 begin "./test_basic"
 	faucet --no-fingerprint
 	assert_identical "./dist/test.txt" "./src/test.txt"
+	assert_identical "./dist/inner/test2.txt" "./src/inner/test2.txt"
 end
 
 begin "./test_fingerprint"
