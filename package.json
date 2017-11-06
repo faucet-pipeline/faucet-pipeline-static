@@ -1,6 +1,6 @@
 {
 	"name": "faucet-pipeline-static",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Static Asset Pipeline",
 	"main": "lib/index.js",
 	"scripts": {
@@ -17,7 +17,7 @@
 	},
 	"homepage": "https://github.com/faucet-pipeline/faucet-pipeline-static#readme",
 	"dependencies": {
-		"faucet-pipeline": "^0.12.0",
+		"faucet-pipeline": "^0.13.0",
 		"faucet-pipeline-util": "^0.10.3"
 	},
 	"devDependencies": {
