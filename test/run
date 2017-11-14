@@ -64,3 +64,8 @@ begin "./test_fingerprint"
 	assert_identical "./dist/test-e59ff97941044f85df5297e1c302d260.txt" "./src/test.txt"
 	assert_identical "./dist/manifest.json" "./expected.json"
 end
+
+begin "./test_manifest_base_uri"
+	faucet
+	assert_identical "./dist/manifest.json" "./expected.json"
+end
