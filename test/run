@@ -69,3 +69,9 @@ begin "./test_manifest_base_uri"
 	faucet
 	assert_identical "./dist/manifest.json" "./expected.json"
 end
+
+begin "./test_single"
+	faucet --no-fingerprint
+	assert_identical "./dist/dist.txt" "./src.txt"
+end
+
