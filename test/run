@@ -26,6 +26,13 @@ function assert_identical {
 			fail "files \`$actual\` and \`$expected\` are not identical"
 }
 
+function assert_identical_json {
+	actual="${1:?}"
+	expected="${2:?}"
+	json-diff "$expected" "$actual" || \
+			fail "files \`$actual\` and \`$expected\` are not identical"
+}
+
 function assert_manifest {
 	asset_path="${1:?}"
 	uri="${2:?}"
@@ -62,12 +69,12 @@ end
 begin "./test_fingerprint"
 	faucet
 	assert_identical "./dist/test-e59ff97941044f85df5297e1c302d260.txt" "./src/test.txt"
-	assert_identical "./dist/manifest.json" "./expected.json"
+	assert_identical_json "./dist/manifest.json" "./expected.json"
 end
 
 begin "./test_manifest_base_uri"
 	faucet
-	assert_identical "./dist/manifest.json" "./expected.json"
+	assert_identical_json "./dist/manifest.json" "./expected.json"
 end
 
 begin "./test_single"
