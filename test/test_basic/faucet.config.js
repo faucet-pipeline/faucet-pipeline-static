@@ -1,11 +1,8 @@
 "use strict";
 
 module.exports = {
-	static: {
-		manifest: false,
-		bundles: [{
-			source: "src",
-			target: "dist"
-		}]
-	}
+	static: [{
+		source: "./src",
+		target: "./dist"
+	}]
 };

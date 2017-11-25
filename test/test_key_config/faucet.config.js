@@ -8,6 +8,6 @@ module.exports = {
 	}],
 	manifest: {
 		file: "./dist/manifest.json",
-		value: f => `/assets/${path.relative("./dist", f)}`
+		key: (f, targetDir) => path.relative(targetDir, f)
 	}
 };

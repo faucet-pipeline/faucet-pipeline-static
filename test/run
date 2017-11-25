@@ -61,24 +61,28 @@ function fail {
 cd "$root/test"
 
 begin "./test_basic"
-	faucet --no-fingerprint
+	faucet
 	assert_identical "./dist/test.txt" "./src/test.txt"
 	assert_identical "./dist/inner/test2.txt" "./src/inner/test2.txt"
 end
 
 begin "./test_fingerprint"
-	faucet
+	faucet --fingerprint
 	assert_identical "./dist/test-e59ff97941044f85df5297e1c302d260.txt" "./src/test.txt"
 	assert_identical_json "./dist/manifest.json" "./expected.json"
 end
 
 begin "./test_manifest_base_uri"
-	faucet
+	faucet --fingerprint
 	assert_identical_json "./dist/manifest.json" "./expected.json"
 end
 
 begin "./test_single"
-	faucet --no-fingerprint
+	faucet
 	assert_identical "./dist/dist.txt" "./src.txt"
 end
 
+begin "./test_key_config"
+	faucet --fingerprint
+	assert_identical_json "./dist/manifest.json" "./expected.json"
+end
