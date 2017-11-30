@@ -1,6 +1,6 @@
 {
 	"name": "faucet-pipeline-static",
-	"version": "0.6.0",
+	"version": "0.7.0",
 	"description": "Static Asset Pipeline",
 	"main": "lib/index.js",
 	"scripts": {
