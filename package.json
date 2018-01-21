@@ -4,7 +4,9 @@
 	"description": "Static Asset Pipeline",
 	"main": "lib/index.js",
 	"scripts": {
-		"test": "eslint --cache lib && ./test/run && echo ✓"
+		"test": "npm-run-all --parallel lint test:cli",
+		"test:cli": "./test/run",
+		"lint": "eslint --cache lib test && echo ✓"
 	},
 	"repository": {
 		"type": "git",
@@ -15,14 +17,15 @@
 	"bugs": {
 		"url": "https://github.com/faucet-pipeline/faucet-pipeline-static/issues"
 	},
-	"homepage": "https://github.com/faucet-pipeline/faucet-pipeline-static#readme",
+	"homepage": "http://www.faucet-pipeline.org",
 	"dependencies": {
 		"faucet-pipeline": "1.0.0-beta.0"
 	},
 	"devDependencies": {
-		"eslint": "^4.4.1",
+		"eslint": "^4.16.0",
 		"eslint-config-fnd": "^1.2.0",
 		"json-diff": "^0.5.2",
-		"release-util-fnd": "^1.0.5"
+		"npm-run-all": "^4.1.2",
+		"release-util-fnd": "^1.0.7"
 	}
 }
