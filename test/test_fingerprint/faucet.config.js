@@ -1,4 +1,5 @@
 "use strict";
+let path = require("path");
 
 module.exports = {
 	static: [{
@@ -7,5 +8,8 @@ module.exports = {
 	}],
 	manifest: {
 		file: "./dist/manifest.json"
+	},
+	plugins: {
+		"static": path.resolve("../..")
 	}
 };

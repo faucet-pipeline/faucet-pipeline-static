@@ -1,88 +1,36 @@
 #!/usr/bin/env bash
-
-set -e
+set -euo pipefail
 
 root=`dirname "$0"`
-root=`realpath "$root/.."`
-. "$root/test/local.sh"
+root=`realpath "$root"`
 
-function begin {
-	test_dir="${1:?}"
-	echo; echo `basename "$test_dir"`
-	pushd "$test_dir" > /dev/null
-}
+. "$root/../node_modules/faucet-pipeline/test/cli_harness.sh"
 
-function end {
-	bundles_dir=${1:-"./dist"}
-	rm -r "$bundles_dir"
-	popd > /dev/null
-}
-
-function assert_identical {
-	actual="${1:?}"
-	expected="${2:?}"
-	# NB: `git diff` provides colorization (dependent on configuration)
-	git diff --no-index "$expected" "$actual" || \
-			fail "files \`$actual\` and \`$expected\` are not identical"
-}
-
-function assert_identical_json {
-	actual="${1:?}"
-	expected="${2:?}"
-	json-diff "$expected" "$actual" || \
-			fail "files \`$actual\` and \`$expected\` are not identical"
-}
-
-function assert_manifest {
-	asset_path="${1:?}"
-	uri="${2:?}"
-	manifest_path=${3:-"./dist/manifest.json"}
-
-	json="\"$asset_path\":\"$uri\""
-	grep -q "$json" "$manifest_path" || \
-			fail "manifest \`$manifest_path\` does not contain \`$json\`"
-}
-
-function assert_missing {
-	filepath="${1:?}"
-	if [ -f "$filepath" ]; then
-		fail "file \`$filepath\` should not exist"
-	else
-		true
-	fi
-}
-
-function fail {
-	msg="${1:?}"
-	echo; echo "FAILURE: $msg"
-	false
-}
-
-cd "$root/test"
-
-begin "./test_basic"
+begin "$root/test_basic"
 	faucet
 	assert_identical "./dist/test.txt" "./src/test.txt"
 	assert_identical "./dist/inner/test2.txt" "./src/inner/test2.txt"
 end
 
-begin "./test_fingerprint"
+begin "$root/test_fingerprint"
 	faucet --fingerprint
 	assert_identical "./dist/test-e59ff97941044f85df5297e1c302d260.txt" "./src/test.txt"
-	assert_identical_json "./dist/manifest.json" "./expected.json"
+	assert_json "./dist/manifest.json" "./expected.json"
 end
 
-begin "./test_manifest_base_uri"
+begin "$root/test_manifest_base_uri"
 	faucet --fingerprint
-	assert_identical_json "./dist/manifest.json" "./expected.json"
+	assert_json "./dist/manifest.json" "./expected.json"
 end
 
-begin "./test_single"
+begin "$root/test_single"
 	faucet
 	assert_identical "./dist/dist.txt" "./src.txt"
 end
 
-begin "./test_key_config"
+begin "$root/test_key_config"
 	faucet --fingerprint
-	assert_identical_json "./dist/manifest.json" "./expected.json"
+	assert_json "./dist/manifest.json" "./expected.json"
 end
+
+echo; echo "SUCCESS: all tests passed"
