@@ -33,4 +33,9 @@ begin "$root/test_key_config"
 	assert_json "./dist/manifest.json" "./expected.json"
 end
 
+begin "$root/test_key_for_single_file"
+	faucet
+	assert_json "./dist/manifest.json" "./expected.json"
+end
+
 echo; echo "SUCCESS: all tests passed"
