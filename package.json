@@ -19,7 +19,7 @@
 	},
 	"homepage": "http://www.faucet-pipeline.org",
 	"dependencies": {
-		"faucet-pipeline": "1.0.0-rc.1"
+		"faucet-pipeline": "1.0.0-rc.2"
 	},
 	"devDependencies": {
 		"eslint": "^4.16.0",
