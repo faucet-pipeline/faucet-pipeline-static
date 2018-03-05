@@ -7,7 +7,7 @@ module.exports = {
 		target: "./dist"
 	}],
 	manifest: {
-		file: "./dist/manifest.json"
+		target: "./dist/manifest.json"
 	},
 	plugins: {
 		"static": path.resolve("../..")
