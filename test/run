@@ -38,4 +38,30 @@ begin "$root/test_key_for_single_file"
 	assert_json "./dist/manifest.json" "./expected.json"
 end
 
+begin "$root/test_match_dirname"
+	faucet
+	assert_missing "./dist/test.txt"
+	assert_identical "./dist/inner/test2.txt" "./src/inner/test2.txt"
+end
+
+begin "$root/test_match_extension"
+	faucet
+	assert_identical "./dist/test.txt" "./src/test.txt"
+	assert_identical "./dist/inner/test2.txt" "./src/inner/test2.txt"
+	assert_missing "./dist/nope.json"
+end
+
+begin "$root/test_match_negation"
+	faucet
+	assert_identical "./dist/test.txt" "./src/test.txt"
+	assert_missing "./dist/inner/test2.txt"
+end
+
+begin "$root/test_match_multiple"
+	faucet
+	assert_identical "./dist/test.txt" "./src/test.txt"
+	assert_missing "./dist/inner/test2.txt" "./src/inner/test2.txt"
+	assert_missing "./dist/nope.json"
+end
+
 echo; echo "SUCCESS: all tests passed"
