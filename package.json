@@ -2,11 +2,11 @@
 	"name": "faucet-pipeline-static",
 	"version": "1.0.0-rc.3",
 	"description": "Static Asset Pipeline",
-	"main": "lib/index.js",
+	"main": "index.js",
 	"scripts": {
 		"test": "npm-run-all --parallel lint test:cli",
 		"test:cli": "./test/run",
-		"lint": "eslint --cache lib test && echo ✓"
+		"lint": "eslint --cache index.js test && echo ✓"
 	},
 	"repository": {
 		"type": "git",
