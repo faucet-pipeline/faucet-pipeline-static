@@ -41,10 +41,11 @@ function buildCopier(copyConfig, assetManager) {
 		// otherwise, `target`'s parent directory is used
 		return results.isDirectory() ? target : path.dirname(target);
 	}).then(targetDir => {
+		let { fingerprint } = copyConfig;
 		return files => {
 			(files ? fileFinder.match(files) : fileFinder.all()).
 				then(fileNames => processFiles(fileNames, {
-					assetManager, source, target, targetDir
+					assetManager, source, target, targetDir, fingerprint
 				}));
 		};
 	});
@@ -54,12 +55,17 @@ function processFiles(fileNames, config) {
 	return Promise.all(fileNames.map(fileName => processFile(fileName, config)));
 }
 
-function processFile(fileName, { source, target, targetDir, assetManager }) {
+function processFile(fileName,
+		{ source, target, targetDir, fingerprint, assetManager }) {
 	let sourcePath = path.join(source, fileName);
 	let targetPath = path.join(target, fileName);
 
 	return readFile(sourcePath).
-		then(content => assetManager.writeFile(targetPath, content, {
-			targetDir
-		}));
+		then(content => {
+			let options = { targetDir };
+			if(fingerprint !== undefined) {
+				options.fingerprint = fingerprint;
+			}
+			return assetManager.writeFile(targetPath, content, options);
+		});
 }
