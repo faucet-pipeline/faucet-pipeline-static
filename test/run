@@ -18,6 +18,12 @@ begin "$root/test_fingerprint"
 	assert_json "./dist/manifest.json" "./expected.json"
 end
 
+begin "$root/test_no_fingerprint"
+	faucet --fingerprint
+	assert_identical "./dist/no-fingerprint/test.txt" "./src/test.txt"
+	assert_identical "./dist/fingerprint/test-e59ff97941044f85df5297e1c302d260.txt" "./src/test.txt"
+end
+
 begin "$root/test_manifest_base_uri"
 	faucet --fingerprint
 	assert_json "./dist/manifest.json" "./expected.json"
