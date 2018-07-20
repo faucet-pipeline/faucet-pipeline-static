@@ -1,6 +1,6 @@
 let path = require("path");
-let { promisify } = require("faucet-pipeline/lib/util");
-let FileFinder = require("faucet-pipeline/lib/util/files/finder");
+let { promisify } = require("faucet-pipeline-core/lib/util");
+let FileFinder = require("faucet-pipeline-core/lib/util/files/finder");
 
 let readFile = promisify(require("fs").readFile);
 let stat = promisify(require("fs").stat);
