@@ -8,6 +8,9 @@ module.exports = {
 		filter: path => path.endsWith(".txt")
 	}],
 	plugins: {
-		"static": path.resolve("../..")
+		"static": {
+			plugin: path.resolve("../.."),
+			bucket: "static"
+		}
 	}
 };
