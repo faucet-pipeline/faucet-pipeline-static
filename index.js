@@ -6,24 +6,21 @@ let readFile = promisify(require("fs").readFile);
 let stat = promisify(require("fs").stat);
 
 module.exports = (pluginConfig, assetManager, { watcher }) => {
-	buildCopyAll(pluginConfig, assetManager).
-		then(copyAll => {
-			// Run once for all files
-			copyAll();
+	let copyAll = buildCopyAll(pluginConfig, assetManager);
 
-			if(watcher) {
-				watcher.on("edit", copyAll);
-			}
-		});
+	// Run once for all files
+	copyAll();
+
+	if(watcher) {
+		watcher.on("edit", copyAll);
+	}
 };
 
 function buildCopyAll(copyConfigs, assetManager) {
-	let futureCopiers = copyConfigs.map(copyConfig =>
+	let copiers = copyConfigs.map(copyConfig =>
 		buildCopier(copyConfig, assetManager));
 
-	return Promise.all(futureCopiers).then(copiers => {
-		return files => copiers.forEach(copier => copier(files));
-	});
+	return files => copiers.forEach(copier => copier(files));
 }
 
 function buildCopier(copyConfig, assetManager) {
@@ -36,19 +33,25 @@ function buildCopier(copyConfig, assetManager) {
 		filter: copyConfig.filter
 	});
 
-	return stat(source).then(results => {
-		// If `source` is a directory, `target` is used as target directory -
-		// otherwise, `target`'s parent directory is used
-		return results.isDirectory() ? target : path.dirname(target);
-	}).then(targetDir => {
-		let { fingerprint } = copyConfig;
-		return files => {
-			(files ? fileFinder.match(files) : fileFinder.all()).
-				then(fileNames => processFiles(fileNames, {
-					assetManager, source, target, targetDir, fingerprint
-				}));
-		};
-	});
+	let { fingerprint } = copyConfig;
+
+	return files => {
+		Promise.all([
+			(files ? fileFinder.match(files) : fileFinder.all()),
+			determineTargetDir(source, target)
+		]).then(([fileNames, targetDir]) => {
+			return processFiles(fileNames, {
+				assetManager, source, target, targetDir, fingerprint
+			});
+		});
+	};
+}
+
+// If `source` is a directory, `target` is used as target directory -
+// otherwise, `target`'s parent directory is used
+function determineTargetDir(source, target) {
+	return stat(source).
+		then(results => results.isDirectory() ? target : path.dirname(target));
 }
 
 function processFiles(fileNames, config) {
