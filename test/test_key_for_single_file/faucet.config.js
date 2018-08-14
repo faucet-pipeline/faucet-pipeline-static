@@ -11,6 +11,9 @@ module.exports = {
 		key: (f, targetDir) => path.relative(targetDir, f)
 	},
 	plugins: {
-		"static": path.resolve("../..")
+		"static": {
+			plugin: path.resolve("../.."),
+			bucket: "static"
+		}
 	}
 };

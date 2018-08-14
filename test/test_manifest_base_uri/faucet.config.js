@@ -11,6 +11,9 @@ module.exports = {
 		value: f => `/assets/${path.relative("./dist", f)}`
 	},
 	plugins: {
-		"static": path.resolve("../..")
+		"static": {
+			plugin: path.resolve("../.."),
+			bucket: "static"
+		}
 	}
 };

@@ -11,6 +11,9 @@ module.exports = {
 		target: "./dist/fingerprint"
 	}],
 	plugins: {
-		"static": path.resolve("../..")
+		"static": {
+			plugin: path.resolve("../.."),
+			bucket: "static"
+		}
 	}
 };

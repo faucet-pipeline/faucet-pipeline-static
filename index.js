@@ -5,23 +5,12 @@ let FileFinder = require("faucet-pipeline-core/lib/util/files/finder");
 let readFile = promisify(require("fs").readFile);
 let stat = promisify(require("fs").stat);
 
-module.exports = (pluginConfig, assetManager, { watcher }) => {
-	let copyAll = buildCopyAll(pluginConfig, assetManager);
-
-	// Run once for all files
-	copyAll();
-
-	if(watcher) {
-		watcher.on("edit", copyAll);
-	}
-};
-
-function buildCopyAll(copyConfigs, assetManager) {
-	let copiers = copyConfigs.map(copyConfig =>
+module.exports = (pluginConfig, assetManager) => {
+	let copiers = pluginConfig.map(copyConfig =>
 		buildCopier(copyConfig, assetManager));
 
-	return files => copiers.forEach(copier => copier(files));
-}
+	return files => Promise.all(copiers.map(copier => copier(files)));
+};
 
 function buildCopier(copyConfig, assetManager) {
 	let source = assetManager.resolvePath(copyConfig.source);
@@ -32,11 +21,10 @@ function buildCopier(copyConfig, assetManager) {
 		skipDotfiles: true,
 		filter: copyConfig.filter
 	});
-
 	let { fingerprint } = copyConfig;
 
 	return files => {
-		Promise.all([
+		return Promise.all([
 			(files ? fileFinder.match(files) : fileFinder.all()),
 			determineTargetDir(source, target)
 		]).then(([fileNames, targetDir]) => {
