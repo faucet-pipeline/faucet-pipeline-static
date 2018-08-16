@@ -4,5 +4,18 @@ node_js:
 - 8
 - 10
 
+addons:
+  apt:
+    packages:
+    - autoconf
+    - automake
+    - libtool
+    - nasm
+    - make
+    - pkg-config
+
 script:
 - npm test
+
+before_install:
+- npm run test:prepare
