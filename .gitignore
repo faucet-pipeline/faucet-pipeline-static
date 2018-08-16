@@ -5,3 +5,10 @@
 /samples/output/
 
 /package-lock.json
+
+# Ignore the images
+*.jpg
+*.png
+*.webp
+*.gif
+*.svg

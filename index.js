@@ -5,14 +5,14 @@ let FileFinder = require("faucet-pipeline-core/lib/util/files/finder");
 let readFile = promisify(require("fs").readFile);
 let stat = promisify(require("fs").stat);
 
-module.exports = (pluginConfig, assetManager) => {
+module.exports = (pluginConfig, assetManager, { compact }) => {
 	let copiers = pluginConfig.map(copyConfig =>
-		buildCopier(copyConfig, assetManager));
+		buildCopier(copyConfig, assetManager, { compact }));
 
 	return files => Promise.all(copiers.map(copier => copier(files)));
 };
 
-function buildCopier(copyConfig, assetManager) {
+function buildCopier(copyConfig, assetManager, { compact }) {
 	let source = assetManager.resolvePath(copyConfig.source);
 	let target = assetManager.resolvePath(copyConfig.target, {
 		enforceRelative: true
@@ -22,6 +22,7 @@ function buildCopier(copyConfig, assetManager) {
 		filter: copyConfig.filter
 	});
 	let { fingerprint } = copyConfig;
+	let plugins = determinePlugins(compact, copyConfig);
 
 	return files => {
 		return Promise.all([
@@ -29,10 +30,26 @@ function buildCopier(copyConfig, assetManager) {
 			determineTargetDir(source, target)
 		]).then(([fileNames, targetDir]) => {
 			return processFiles(fileNames, {
-				assetManager, source, target, targetDir, fingerprint
+				assetManager, source, target, targetDir, plugins, fingerprint
 			});
 		});
 	};
+}
+
+function determinePlugins(compact, copyConfig) {
+	if(!compact) {
+		return {};
+	}
+
+	if(copyConfig.compact === "images") {
+		return {
+			jpg: require("imagemin-mozjpeg")({ quality: 80 }),
+			png: require("imagemin-pngquant")(),
+			svg: require("imagemin-svgo")()
+		};
+	}
+
+	return copyConfig.compact || {};
 }
 
 // If `source` is a directory, `target` is used as target directory -
@@ -47,11 +64,16 @@ function processFiles(fileNames, config) {
 }
 
 function processFile(fileName,
-		{ source, target, targetDir, fingerprint, assetManager }) {
+		{ source, target, targetDir, fingerprint, assetManager, plugins }) {
 	let sourcePath = path.join(source, fileName);
 	let targetPath = path.join(target, fileName);
 
 	return readFile(sourcePath).
+		then(content => {
+			let type = determineFileType(sourcePath);
+			let plugin = type && plugins[type];
+			return plugin ? plugin(content) : content;
+		}).
 		then(content => {
 			let options = { targetDir };
 			if(fingerprint !== undefined) {
@@ -59,4 +81,8 @@ function processFile(fileName,
 			}
 			return assetManager.writeFile(targetPath, content, options);
 		});
+}
+
+function determineFileType(sourcePath) {
+	return path.extname(sourcePath).substr(1).toLowerCase();
 }
