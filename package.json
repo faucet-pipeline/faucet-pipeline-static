@@ -1,6 +1,6 @@
 {
 	"name": "faucet-pipeline-static",
-	"version": "1.0.0-rc.8",
+	"version": "1.0.0-rc.9",
 	"description": "Static Asset Pipeline",
 	"main": "index.js",
 	"scripts": {
@@ -20,7 +20,7 @@
 	},
 	"homepage": "http://www.faucet-pipeline.org",
 	"dependencies": {
-		"faucet-pipeline-core": "^1.0.0-rc.11"
+		"faucet-pipeline-core": "~1.0.0-rc.13"
 	},
 	"devDependencies": {
 		"eslint-config-fnd": "^1.6.0",
