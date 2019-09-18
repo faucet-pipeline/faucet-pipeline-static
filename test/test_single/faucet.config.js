@@ -7,7 +7,7 @@ module.exports = {
 		target: "./dist/dist.txt"
 	}],
 	plugins: {
-		"static": {
+		static: {
 			plugin: path.resolve("../.."),
 			bucket: "static"
 		}

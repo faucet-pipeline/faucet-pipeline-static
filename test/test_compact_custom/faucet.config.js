@@ -10,7 +10,7 @@ module.exports = {
 		}
 	}],
 	plugins: {
-		"static": {
+		static: {
 			plugin: path.resolve("../.."),
 			bucket: "static"
 		}

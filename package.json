@@ -20,10 +20,10 @@
 	},
 	"homepage": "https://www.faucet-pipeline.org",
 	"dependencies": {
-		"faucet-pipeline-core": "^1.0.0-rc.13"
+		"faucet-pipeline-core": "^1.2.1"
 	},
 	"devDependencies": {
-		"eslint-config-fnd": "^1.6.0",
+		"eslint-config-fnd": "^1.8.0",
 		"imagemin-mozjpeg": "^8.0.0",
 		"imagemin-pngquant": "^8.0.0",
 		"imagemin-svgo": "^7.0.0",

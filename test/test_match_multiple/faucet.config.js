@@ -8,7 +8,7 @@ module.exports = {
 		filter: path => path.endsWith(".txt") && !path.startsWith("inner/")
 	}],
 	plugins: {
-		"static": {
+		static: {
 			plugin: path.resolve("../.."),
 			bucket: "static"
 		}

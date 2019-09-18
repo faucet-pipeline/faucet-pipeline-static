@@ -8,7 +8,7 @@ module.exports = {
 		filter: path => !path.endsWith("/test2.txt")
 	}],
 	plugins: {
-		"static": {
+		static: {
 			plugin: path.resolve("../.."),
 			bucket: "static"
 		}

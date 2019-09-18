@@ -10,7 +10,7 @@ module.exports = {
 		target: "./dist/manifest.json"
 	},
 	plugins: {
-		"static": {
+		static: {
 			plugin: path.resolve("../.."),
 			bucket: "static"
 		}

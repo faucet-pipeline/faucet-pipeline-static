@@ -8,7 +8,7 @@ module.exports = {
 		compact: "images"
 	}],
 	plugins: {
-		"static": {
+		static: {
 			plugin: path.resolve("../.."),
 			bucket: "static"
 		}
