@@ -10,10 +10,5 @@ module.exports = {
 		target: "./dist/manifest.json",
 		value: f => `/assets/${path.relative("./dist", f)}`
 	},
-	plugins: {
-		static: {
-			plugin: path.resolve("../.."),
-			bucket: "static"
-		}
-	}
+	plugins: [path.resolve(__dirname, "../..")]
 };

@@ -5,12 +5,18 @@ let FileFinder = require("faucet-pipeline-core/lib/util/files/finder");
 let readFile = promisify(require("fs").readFile);
 let stat = promisify(require("fs").stat);
 
-module.exports = (config, assetManager, { compact } = {}) => {
+module.exports = {
+	key: "static",
+	bucket: "static",
+	plugin: faucetStatic
+};
+
+function faucetStatic(config, assetManager, { compact } = {}) {
 	let copiers = config.map(copyConfig =>
 		makeCopier(copyConfig, assetManager, { compact }));
 
 	return filepaths => Promise.all(copiers.map(copy => copy(filepaths)));
-};
+}
 
 function makeCopier(copyConfig, assetManager, { compact } = {}) {
 	let source = assetManager.resolvePath(copyConfig.source);
