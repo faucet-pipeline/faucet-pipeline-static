@@ -9,10 +9,5 @@ module.exports = {
 			svg: require("imagemin-svgo")()
 		}
 	}],
-	plugins: {
-		static: {
-			plugin: path.resolve("../.."),
-			bucket: "static"
-		}
-	}
+	plugins: [path.resolve(__dirname, "../..")]
 };

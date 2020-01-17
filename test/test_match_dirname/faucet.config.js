@@ -7,10 +7,5 @@ module.exports = {
 		target: "./dist",
 		filter: path => path.startsWith("inner/")
 	}],
-	plugins: {
-		static: {
-			plugin: path.resolve("../.."),
-			bucket: "static"
-		}
-	}
+	plugins: [path.resolve(__dirname, "../..")]
 };

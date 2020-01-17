@@ -7,10 +7,5 @@ module.exports = {
 		target: "./dist",
 		filter: path => !path.endsWith("/test2.txt")
 	}],
-	plugins: {
-		static: {
-			plugin: path.resolve("../.."),
-			bucket: "static"
-		}
-	}
+	plugins: [path.resolve(__dirname, "../..")]
 };

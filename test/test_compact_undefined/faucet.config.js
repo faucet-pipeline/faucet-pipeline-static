@@ -6,10 +6,5 @@ module.exports = {
 		source: "./src",
 		target: "./dist"
 	}],
-	plugins: {
-		static: {
-			plugin: path.resolve("../.."),
-			bucket: "static"
-		}
-	}
+	plugins: [path.resolve(__dirname, "../..")]
 };
