@@ -1,9 +1,6 @@
+let { readFile, stat } = require("fs").promises;
 let path = require("path");
-let { promisify } = require("faucet-pipeline-core/lib/util");
 let FileFinder = require("faucet-pipeline-core/lib/util/files/finder");
-
-let readFile = promisify(require("fs").readFile);
-let stat = promisify(require("fs").stat);
 
 module.exports = {
 	key: "static",
@@ -69,24 +66,32 @@ function processFiles(fileNames, config) {
 	return Promise.all(fileNames.map(fileName => processFile(fileName, config)));
 }
 
-function processFile(fileName,
+async function processFile(fileName,
 		{ source, target, targetDir, fingerprint, assetManager, plugins }) {
 	let sourcePath = path.join(source, fileName);
 	let targetPath = path.join(target, fileName);
 
-	return readFile(sourcePath).
-		then(content => {
-			let type = determineFileType(sourcePath);
-			let plugin = type && plugins[type];
-			return plugin ? plugin(content) : content;
-		}).
-		then(content => {
-			let options = { targetDir };
-			if(fingerprint !== undefined) {
-				options.fingerprint = fingerprint;
-			}
-			return assetManager.writeFile(targetPath, content, options);
-		});
+	try {
+		var content = await readFile(sourcePath); // eslint-disable-line no-var
+	} catch(err) {
+		if(err.code !== "ENOENT") {
+			throw err;
+		}
+		console.error(`WARNING: \`${sourcePath}\` no longer exists`);
+		return;
+	}
+
+	let type = determineFileType(sourcePath);
+	if(type && plugins[type]) {
+		let plugin = plugins[type];
+		content = await plugin(content);
+	}
+
+	let options = { targetDir };
+	if(fingerprint !== undefined) {
+		options.fingerprint = fingerprint;
+	}
+	return assetManager.writeFile(targetPath, content, options);
 }
 
 function determineFileType(sourcePath) {
