@@ -20,7 +20,28 @@ function faucetStatic(config, assetManager, { compact } = {}) {
 }
 
 function makeCopier(copyConfig, assetManager, { compact } = {}) {
-	let source = assetManager.resolvePath(copyConfig.source);
+	let { source } = copyConfig;
+	try {
+		source = assetManager.resolvePath(source);
+	} catch(err) {
+		if(err.code !== "MODULE_NOT_FOUND") {
+			throw err;
+		}
+
+		// attempt to resolve non-JavaScript package references via a simplistic heuristic
+		// TODO: move into faucet-core?
+		// ignore non-implicit references (starting with `./` or `../`)
+		// XXX: duplicates faucet-core's `resolvePath`
+		if(/^\.?\.\//.test(source)) {
+			throw err;
+		}
+		source = path.resolve(assetManager.referenceDir, "node_modules", source);
+		try {
+			fs.statSync(source); // ensures file/directory exists
+		} catch(_err) {
+			throw err;
+		}
+	}
 	let target = assetManager.resolvePath(copyConfig.target, {
 		enforceRelative: true
 	});
