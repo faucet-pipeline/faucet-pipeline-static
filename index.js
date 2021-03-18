@@ -1,6 +1,7 @@
 let { readFile, stat } = require("fs").promises;
 let path = require("path");
 let FileFinder = require("faucet-pipeline-core/lib/util/files/finder");
+let { abort } = require("faucet-pipeline-core/lib/util");
 
 module.exports = {
 	key: "static",
@@ -45,11 +46,7 @@ function determinePlugins(compact, copyConfig) {
 	}
 
 	if(copyConfig.compact === "images") {
-		return {
-			jpg: require("imagemin-mozjpeg")({ quality: 80 }),
-			png: require("imagemin-pngquant")(),
-			svg: require("imagemin-svgo")()
-		};
+		abort("images compaction option has been removed - see https://www.faucet-pipeline.org/static"); // eslint-disable-line max-len
 	}
 
 	return copyConfig.compact || {};
