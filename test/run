@@ -82,44 +82,4 @@ begin "$root/test_match_multiple"
 	assert_missing "./dist/nope.json"
 end
 
-begin "$root/test_compact_undefined"
-	faucet --compact
-	assert_identical src/test.txt dist/test.txt
-	assert_identical src/example.jpg dist/example.jpg
-	assert_identical src/example.png dist/example.png
-	assert_identical src/example.gif dist/example.gif
-	assert_identical src/example.svg dist/example.svg
-	assert_identical src/example.webp dist/example.webp
-end
-
-begin "$root/test_compact_images"
-	faucet
-	assert_identical src/test.txt dist/test.txt
-	assert_identical src/example.jpg dist/example.jpg
-	assert_identical src/example.png dist/example.png
-	assert_identical src/example.gif dist/example.gif
-	assert_identical src/example.svg dist/example.svg
-	assert_identical src/example.webp dist/example.webp
-end
-
-begin "$root/test_compact_images"
-	faucet --compact
-	assert_identical src/test.txt dist/test.txt
-	assert_smaller_size src/example.jpg dist/example.jpg
-	assert_smaller_size src/example.png dist/example.png
-	assert_identical src/example.gif dist/example.gif
-	assert_smaller_size src/example.svg dist/example.svg
-	assert_identical src/example.webp dist/example.webp
-end
-
-begin "$root/test_compact_custom"
-	faucet --compact
-	assert_identical src/test.txt dist/test.txt
-	assert_identical src/example.jpg dist/example.jpg
-	assert_identical src/example.png dist/example.png
-	assert_identical src/example.gif dist/example.gif
-	assert_smaller_size src/example.svg dist/example.svg
-	assert_identical src/example.webp dist/example.webp
-end
-
 echo; echo "SUCCESS: all tests passed"
