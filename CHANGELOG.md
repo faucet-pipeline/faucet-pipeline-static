@@ -5,12 +5,12 @@ faucet-pipeline-static version history
 v2.0.0
 ------
 
-_?_
+_2022-02-18_
 
 breaking changes:
 
 * support for legacy node versions is dropped
-* the `compact: images` option has been removed
+* the deprecated `compact: images` option has been removed
 
 changes for end users:
 
