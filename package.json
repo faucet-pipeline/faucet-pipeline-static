@@ -19,11 +19,11 @@
 	},
 	"homepage": "https://www.faucet-pipeline.org",
 	"dependencies": {
-		"faucet-pipeline-core": "^1.4.0"
+		"faucet-pipeline-core": "^1.7.0"
 	},
 	"devDependencies": {
-		"eslint-config-fnd": "^1.8.0",
-		"json-diff": "^0.5.4",
+		"eslint-config-fnd": "^1.12.0",
+		"json-diff": "^0.7.1",
 		"npm-run-all": "^4.1.5",
 		"release-util-fnd": "^2.0.0"
 	}
