@@ -1,6 +1,6 @@
 {
 	"name": "faucet-pipeline-static",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "static files for faucet-pipeline",
 	"main": "index.js",
 	"scripts": {
@@ -22,7 +22,7 @@
 		"node": ">= 14"
 	},
 	"dependencies": {
-		"faucet-pipeline-core": "^1.7.0"
+		"faucet-pipeline-core": "^2.0.0"
 	},
 	"devDependencies": {
 		"eslint-config-fnd": "^1.13.0",
