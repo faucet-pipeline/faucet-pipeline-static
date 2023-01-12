@@ -1,6 +1,13 @@
 faucet-pipeline-static version history
 ======================================
 
+v2.1.0
+------
+
+_2023-01-12_
+
+maintenance release to update dependencies; no significant changes
+
 
 v2.0.0
 ------
