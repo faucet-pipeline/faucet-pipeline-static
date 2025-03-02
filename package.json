@@ -22,7 +22,7 @@
 		"node": ">= 18"
 	},
 	"dependencies": {
-		"faucet-pipeline-core": "^2.0.0"
+		"faucet-pipeline-core": "^3.0.0"
 	},
 	"devDependencies": {
 		"eslint-config-fnd": "^1.13.0",
