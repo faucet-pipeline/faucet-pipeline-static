@@ -1,6 +1,6 @@
 let { readFile, stat } = require("fs").promises;
 let path = require("path");
-let FileFinder = require("faucet-pipeline-core/lib/util/files/finder");
+let { FileFinder } = require("faucet-pipeline-core/lib/util/files/finder");
 
 module.exports = {
 	key: "static",
