@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"noEmit": true,
+		"strict": true,
+		"allowImportingTsExtensions": true,
+		"lib": ["dom", "es2023"],
+	},
+	"exclude": [
+			"./test/**",
+	]
+}

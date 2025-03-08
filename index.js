@@ -1,6 +1,17 @@
-let { readFile, stat } = require("fs").promises;
-let path = require("path");
-let { FileFinder } = require("faucet-pipeline-core/lib/util/files/finder");
+let { readFile, stat } = require("node:fs/promises");
+let path = require("node:path");
+let { FileFinder } = require("./lib.js");
+/** @import {
+  *   Config,
+	*   AssetManager,
+	*   FaucetPlugin,
+	*   FaucetPluginOptions,
+	*   FaucetPluginFunc,
+	*   CompactorMap,
+	*   WriteFileOpts,
+	*   ProcessFile
+	*   } from "./types.ts"
+	**/
 
 module.exports = {
 	key: "static",
@@ -8,6 +19,11 @@ module.exports = {
 	plugin: faucetStatic
 };
 
+/**
+ * The static plugin copies files with an option to define compaction functions
+ *
+ * @type FaucetPlugin<Config>
+ */
 function faucetStatic(config, assetManager, { compact } = {}) {
 	let copiers = config.map(copyConfig =>
 		makeCopier(copyConfig, assetManager, { compact }));
@@ -15,6 +31,14 @@ function faucetStatic(config, assetManager, { compact } = {}) {
 	return filepaths => Promise.all(copiers.map(copy => copy(filepaths)));
 }
 
+/**
+ * Create a copier for a single configuration
+ *
+ * @param {Config} copyConfig
+ * @param {AssetManager} assetManager
+ * @param {FaucetPluginOptions} options
+ * @returns {FaucetPluginFunc}
+ */
 function makeCopier(copyConfig, assetManager, { compact } = {}) {
 	let source = assetManager.resolvePath(copyConfig.source);
 	let target = assetManager.resolvePath(copyConfig.target, {
@@ -25,7 +49,7 @@ function makeCopier(copyConfig, assetManager, { compact } = {}) {
 		filter: copyConfig.filter
 	});
 	let { fingerprint } = copyConfig;
-	let plugins = determinePlugins(compact, copyConfig);
+	let compactors = determineCompactors(compact, copyConfig);
 
 	return filepaths => {
 		return Promise.all([
@@ -33,13 +57,20 @@ function makeCopier(copyConfig, assetManager, { compact } = {}) {
 			determineTargetDir(source, target)
 		]).then(([fileNames, targetDir]) => {
 			return processFiles(fileNames, {
-				assetManager, source, target, targetDir, plugins, fingerprint
+				assetManager, source, target, targetDir, compactors, fingerprint
 			});
 		});
 	};
 }
 
-function determinePlugins(compact, copyConfig) {
+/**
+ * Determine which compactors should be used
+ *
+ * @param {boolean | undefined} compact
+ * @param {Config} copyConfig
+ * @returns {CompactorMap}
+ */
+function determineCompactors(compact, copyConfig) {
 	if(!compact) {
 		return {};
 	}
@@ -47,25 +78,42 @@ function determinePlugins(compact, copyConfig) {
 	return copyConfig.compact || {};
 }
 
-// If `source` is a directory, `target` is used as target directory -
-// otherwise, `target`'s parent directory is used
+/**
+ * If `source` is a directory, `target` is used as target directory -
+ * otherwise, `target`'s parent directory is used
+ *
+ * @param {string} source
+ * @param {string} target
+ * @returns {Promise<string>}
+ */
 function determineTargetDir(source, target) {
 	return stat(source).
 		then(results => results.isDirectory() ? target : path.dirname(target));
 }
 
+/**
+ * @param {string[]} fileNames
+ * @param {ProcessFile} config
+ * @returns {Promise<unknown>}
+ */
 function processFiles(fileNames, config) {
 	return Promise.all(fileNames.map(fileName => processFile(fileName, config)));
 }
 
+/**
+ * @param {string} fileName
+ * @param {ProcessFile} opts
+ * @returns {Promise<unknown>}
+ */
 async function processFile(fileName,
-		{ source, target, targetDir, fingerprint, assetManager, plugins }) {
+		{ source, target, targetDir, fingerprint, assetManager, compactors }) {
 	let sourcePath = path.join(source, fileName);
 	let targetPath = path.join(target, fileName);
 
 	try {
 		var content = await readFile(sourcePath); // eslint-disable-line no-var
 	} catch(err) {
+		// @ts-ignore
 		if(err.code !== "ENOENT") {
 			throw err;
 		}
@@ -74,11 +122,14 @@ async function processFile(fileName,
 	}
 
 	let type = determineFileType(sourcePath);
-	if(type && plugins[type]) {
-		let plugin = plugins[type];
-		content = await plugin(content);
+	if(type && compactors[type]) {
+		let compactor = compactors[type];
+		content = await compactor(content);
 	}
 
+	/**
+	 * @type WriteFileOpts
+	 */
 	let options = { targetDir };
 	if(fingerprint !== undefined) {
 		options.fingerprint = fingerprint;
@@ -86,6 +137,12 @@ async function processFile(fileName,
 	return assetManager.writeFile(targetPath, content, options);
 }
 
+/**
+ * The filetype is the lower case file extension
+ *
+ * @param {string} sourcePath
+ * @returns {string}
+ */
 function determineFileType(sourcePath) {
 	return path.extname(sourcePath).substr(1).toLowerCase();
 }

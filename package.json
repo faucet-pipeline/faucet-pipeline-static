@@ -4,9 +4,10 @@
 	"description": "static files for faucet-pipeline",
 	"main": "index.js",
 	"scripts": {
-		"test": "npm run lint && npm run test:cli",
+		"test": "npm run lint && npm run typecheck && npm run test:cli",
 		"test:cli": "./test/run",
-		"lint": "eslint --cache index.js test && echo ✓"
+		"lint": "eslint --cache index.js test && echo ✓",
+		"typecheck": "tsc"
 	},
 	"repository": {
 		"type": "git",
@@ -22,11 +23,13 @@
 		"node": ">= 20"
 	},
 	"dependencies": {
-		"faucet-pipeline-core": "^3.0.0"
+		"faucet-pipeline-core": "^2.0.0 || ^3.0.0"
 	},
 	"devDependencies": {
+		"@types/node": "^22.13.10",
 		"eslint-config-fnd": "^1.13.0",
 		"json-diff": "^1.0.0",
-		"release-util-fnd": "^3.0.0"
+		"release-util-fnd": "^3.0.0",
+		"typescript": "^5.8.2"
 	}
 }
