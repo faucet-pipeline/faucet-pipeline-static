@@ -2,11 +2,11 @@
 	"name": "faucet-pipeline-static",
 	"version": "2.1.0",
 	"description": "static files for faucet-pipeline",
-	"main": "index.js",
+	"main": "lib/index.js",
 	"scripts": {
 		"test": "npm run lint && npm run typecheck && npm run test:cli",
 		"test:cli": "./test/run",
-		"lint": "eslint --cache index.js test && echo ✓",
+		"lint": "eslint --cache lib test && echo ✓",
 		"typecheck": "tsc"
 	},
 	"repository": {
