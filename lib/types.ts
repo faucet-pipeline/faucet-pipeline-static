@@ -35,7 +35,7 @@ export interface Config {
 	fingerprint?: boolean,
 	compact?: CompactorMap,
 	assetManager: AssetManager,
-	filter?: (filename: string) => boolean
+	filter?: Filter
 }
 
 export interface CompactorMap {
@@ -47,16 +47,21 @@ export interface Compactor {
 }
 
 export interface ProcessFile {
+	(filename: string, opts: ProcessFileOptions): Promise<unknown>
+}
+
+export interface ProcessFileOptions {
 	source: string,
 	target: string,
 	targetDir: string,
-	fingerprint?: boolean,
-	compactors: CompactorMap,
 	assetManager: AssetManager,
-	filter?: (filename: string) => boolean
 }
 
 export interface FileFinderOptions {
 	skipDotfiles: boolean,
-	filter?: (filename: string) => boolean
+	filter?: Filter
+}
+
+export interface Filter {
+	(filename: string): boolean
 }
