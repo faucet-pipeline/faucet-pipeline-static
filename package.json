@@ -3,6 +3,7 @@
 	"version": "2.1.0",
 	"description": "static files for faucet-pipeline",
 	"main": "lib/index.js",
+	"type": "module",
 	"scripts": {
 		"test": "npm run lint && npm run typecheck && npm run test:cli",
 		"test:cli": "./test/run",

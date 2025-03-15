@@ -1,10 +1,9 @@
-"use strict";
-let path = require("path");
+import { resolve } from "node:path";
 
-module.exports = {
-	static: [{
-		source: "./src",
-		target: "./dist"
-	}],
-	plugins: [path.resolve(__dirname, "../..")]
-};
+const config = [{
+	source: "./src",
+	target: "./dist"
+}];
+export { config as static };
+
+export const plugins = [resolve(import.meta.dirname, "../..")];

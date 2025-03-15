@@ -6,6 +6,7 @@
 		"strict": true,
 		"allowImportingTsExtensions": true,
 		"lib": ["dom", "es2023"],
+		"module": "nodenext"
 	},
 	"exclude": [
 			"./test/**",

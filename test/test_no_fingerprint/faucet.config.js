@@ -1,14 +1,13 @@
-"use strict";
-let path = require("path");
+import { resolve } from "node:path";
 
-module.exports = {
-	static: [{
-		source: "./src",
-		target: "./dist/no-fingerprint",
-		fingerprint: false
-	}, {
-		source: "./src",
-		target: "./dist/fingerprint"
-	}],
-	plugins: [path.resolve(__dirname, "../..")]
-};
+const config = [{
+	source: "./src",
+	target: "./dist/no-fingerprint",
+	fingerprint: false
+}, {
+	source: "./src",
+	target: "./dist/fingerprint"
+}];
+export { config as static };
+
+export const plugins = [resolve(import.meta.dirname, "../..")];
