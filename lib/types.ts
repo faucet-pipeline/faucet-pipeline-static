@@ -15,7 +15,7 @@ export interface FaucetPluginOptions {
 
 export interface AssetManager {
 	resolvePath: (path: string, opts?: ResolvePathOpts) => string
-		writeFile: (targetPath: string, content: Buffer, options: WriteFileOpts) => Promise<unknown>
+	writeFile: (targetPath: string, content: Buffer, options: WriteFileOpts) => Promise<unknown>
 }
 
 export interface ResolvePathOpts {

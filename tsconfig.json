@@ -8,7 +8,5 @@
 		"lib": ["dom", "es2023"],
 		"module": "nodenext"
 	},
-	"exclude": [
-			"./test/**",
-	]
+	"exclude": ["./test/**"]
 }
