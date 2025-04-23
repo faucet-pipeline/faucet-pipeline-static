@@ -1,6 +1,18 @@
 faucet-pipeline-static version history
 ======================================
 
+v2.2.0
+------
+
+_TBD_
+
+maintenance release to update dependencies; no significant changes
+
+improvements for developers:
+
+* it now exposes `buildProcessPipeline` for other pipelines that convert directories of files instead of single files
+
+
 v2.1.0
 ------
 

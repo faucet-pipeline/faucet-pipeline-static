@@ -1,6 +1,6 @@
 {
 	"name": "faucet-pipeline-static",
-	"version": "2.1.0",
+	"version": "2.2.0",
 	"description": "static files for faucet-pipeline",
 	"main": "./lib/index.js",
 	"type": "module",
