@@ -24,7 +24,7 @@
 		"node": ">= 20.19.0"
 	},
 	"dependencies": {
-		"faucet-pipeline-core": "^2.0.0 || ^3.0.0"
+		"faucet-pipeline-core": "git+https://github.com/faucet-pipeline/faucet-pipeline-core.git#util-cleanup"
 	},
 	"devDependencies": {
 		"@types/node": "^22.13.10",
