@@ -1,7 +1,8 @@
 # faucet-pipeline-static
-[![npm](https://img.shields.io/npm/v/faucet-pipeline-static.svg)](https://www.npmjs.com/package/faucet-pipeline-static)
 
-See [faucet-pipeline.org](https://www.faucet-pipeline.org) for documentation.
+This package is deprecated, as it was replaced by `faucet-pipeline-assets`.
+
+<https://codeberg.org/faucet-pipeline/faucet-pipeline-assets>
 
 ## License
 
